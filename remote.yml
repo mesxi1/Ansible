@@ -1,0 +1,18 @@
+---
+- hosts: kubernetes
+  user: root
+  tasks:
+    - name: Pull an image
+      community.docker.docker_image:
+        name: problemsetters/801133-ansible
+        source: pull
+    # Select platform for pulling. If not specified, will pull whatever docker prefers.
+        pull:
+          platform: amd64
+    - name: Ensure the test container is running.
+      docker_container:
+        image: problemsetters/801133-ansible
+        name: 801133-ansible
+        ports:
+          "8080:80"
+        state: started
